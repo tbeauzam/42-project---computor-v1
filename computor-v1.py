@@ -198,7 +198,7 @@ class Polynom:
         print("\nSolving this:")
         print("\nEquation: " + self.reduced_form)
 
-        zero_term = -values[0]
+        zero_term = values[0]
         zero_term_max_len = len(str(zero_term).split(".")[0]) + self.PRECISION
         str_zero_term = format(zero_term, ".%sg" % (zero_term_max_len))
         one_term = values[1]
@@ -233,12 +233,49 @@ class Polynom:
             print("Degree is 2. Let's solve that.\nFor the sake of resolution, let's say that:")
             print("- c is the degree 0 term\n- b is the degree 1 term\n- a is the degree 2 term")
 
-            if zero_term == 0:
+            if zero_term == 0 and one_term == 0:
+                print("In this case we have b = 0 and c = 0. Only the degree 2 term is non-null. There is only one answer in this case.")
+                print("Solution:\nx = 0")
+            elif zero_term == 0:
                 minus_one_term = -one_term
                 result = minus_one_term / two_term
                 print("We have c = 0. In this case, we can use this formula: x * ( ax + b ) = 0  :  x * ( " + self.get_str_term(two_term) + "x + " + self.get_str_term(one_term) + " ) = 0")
                 print("The two solutions in this case are x = 0 and x = -b / a  :  x = " + self.get_str_term(minus_one_term) + " / " + self.get_str_term(two_term))
-                print("Solutions:\nx = 0 and x = " + self.get_str_term(result))
+                print("Solutions:\nx1 = 0 and x2 = " + self.get_str_term(result))
+            else:
+                minus_one_term = -one_term
+                discriminant = (one_term * one_term) - (4 * two_term * zero_term)
+                print("The first thing to do is to find the discriminant (Called Delta or Δ). The formula is: Δ = b² - 4ac")
+                print("Δ = " + self.get_str_term(one_term) + "² - ( 4 * " + self.get_str_term(two_term) + " * " + self.get_str_term(zero_term) + ")")
+                print("Δ = " + self.get_str_term(discriminant))
+                if discriminant > 0:
+                    x1 = (minus_one_term + self.ft_sqrt(discriminant)) / (2 * two_term)
+                    x2 = (minus_one_term - self.ft_sqrt(discriminant)) / (2 * two_term)
+                    print("Discriminant is strictly greater than 0. This means there are two real numbers as solutions.")
+                    print("Formulas for each are: x1 = (-b + √Δ) / 2a  and  x2 = (-b - √Δ) / 2a")
+                    print("So, x1 = ( " + self.get_str_term(minus_one_term) + " + √" + self.get_str_term(discriminant) + " ) / ( 2 * " + self.get_str_term(two_term) + ")")
+                    print("And x2 = ( " + self.get_str_term(minus_one_term) + " - √" + self.get_str_term(discriminant) + " ) / ( 2 * " + self.get_str_term(two_term) + ")")
+                    print("Solutions:\nx1 = " + self.get_str_term(x1) + " and x2 = " + self.get_str_term(x2))
+
+                elif discriminant < 0:
+                    discriminant = -discriminant
+                    real_x = minus_one_term / (2 * two_term)
+                    complex_x = self.ft_sqrt(discriminant) / (2 * two_term)
+                    print("Discriminant is strictly lower than 0. This means there are two complex numbers as solutions.")
+                    print("For this one, we are obligated to introduce a number that allow us to achieve negative square root. But still write Δ as a positive number.")
+                    print("Formulas for each solution are: x1 = (-b + i√Δ) / 2a  and  x2 = (-b - i√Δ) / 2a")
+                    print("This displays like this: x1 = (-b / (2a)) + ((i√Δ) / (2a))  and  x2 = (-b / (2a)) - ((i√Δ) / (2a))")
+                    print("So, x1 = ((" + self.get_str_term(minus_one_term) + " / ( 2 * " + self.get_str_term(two_term) + ")) + (i√" + self.get_str_term(discriminant) + ") / ( 2 * " + self.get_str_term(two_term) + "))")
+                    print("And x2 = ((" + self.get_str_term(minus_one_term) + " / ( 2 * " + self.get_str_term(two_term) + ")) - (i√" + self.get_str_term(discriminant) + ") / ( 2 * " + self.get_str_term(two_term) + "))")
+                    print("Solutions:")
+                    print("x1 = " + self.get_str_term(real_x) + " + i * " + self.get_str_term(complex_x) + " and x2 = " + self.get_str_term(real_x) + " - i * " + self.get_str_term(complex_x))
+                else:
+                    x = minus_one_term / (2 * two_term)
+                    print("Discriminant equals 0. This means the equation has only one real number as solution (more precisely, two identical solutions)")
+                    print("In this case, x can be found with the following formula: x = -b / 2a")
+                    print("Here, x = " + self.get_str_term(minus_one_term) + " / ( 2 * " + self.get_str_term(two_term) + " )")
+                    print("Solution:")
+                    print("x = " + self.get_str_term(x))
 
 
     def get_str_term(self, value):
@@ -251,6 +288,24 @@ class Polynom:
             if c not in self.valid_charset:
                 return False
         return True
+
+    def ft_sqrt(self, nb):
+
+        if nb <= 0:
+            display_error("this number is not > 0; cannot square root it")
+            exit(0)
+
+        guess = nb / 2
+        i = 0
+        while i < 10:
+            bigger = nb / guess if nb / guess >= guess else guess
+            smaller = nb / guess if nb / guess < guess else guess
+            satisfying_sqrt = 1 if bigger - smaller < 0.0000000001 else 0
+            if satisfying_sqrt:
+                return guess
+            guess = (guess + (nb / guess)) / 2
+            i += 1
+        return guess
 
 
 

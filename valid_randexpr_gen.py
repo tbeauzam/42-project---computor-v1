@@ -17,7 +17,7 @@ degree_one = [  "%s * x^1",
 
 degree_two = [  "%s * x^2",
                 "%sx^2",
-                "x^2",
+                "x^2" ]
 
 MIN_RANGE = 0
 MAX_RANGE = 100
@@ -76,15 +76,12 @@ def generate_terms():
     return select_zero(20, 40) + select_one(20, 40) + select_two(20, 40)
 
 def main():
-    print("How many lines do you want?")
-    nb = ""
-    while not isInt(nb):
-        nb = input("Number here ==> ")
-    nb = int(nb)
+    if len(sys.argv) < 2 or not isInt(sys.argv[1]):
+        exit("Usage: python3 valid_randexpr_gen.py <number>")
+    nb = int(sys.argv[1])
     nb = 0 if nb < 0 else nb
     nb = 100 if nb > 100 else nb
 
-    print(str(nb) + "? Here you go:")
     for i in range(nb):
         lhs = select_zero(10, 30) + select_one(10, 25) + select_two(10, 25)
         rhs = generate_terms()
