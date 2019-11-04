@@ -415,7 +415,7 @@ class Polynom:
 def display_usage():
     message = "\nUsage:\n --> python3 <options> computor-v1.py \"polynomial equation\"\n"
     message += "\nNotes:\n"
-    message += "- this is a python 3 script, not python 2"
+    message += "- this is a python 3 script, not python 2\n"
     message += "- polynomial degree of reduced form must be 0, 1 or 2\n"
     message += "- no negative or non-integer exponents allowed (valid range: 0 to 99)\n"
     message += "- valid characters set: |" + Polynom.valid_charset +"|\n- x can be written x or X, but every occurence will be lower-cased\n"
