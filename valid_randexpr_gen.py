@@ -92,7 +92,7 @@ def main():
         lhs = "0 " if lhs == "" else lhs
         rhs = "0" if rhs == "" else rhs
         expression = lhs + "= " + rhs
-        print(expression)
+        print("\"" + expression.strip() + "\"")
 
 
 if __name__ == "__main__":
