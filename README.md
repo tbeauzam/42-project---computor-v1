@@ -150,3 +150,90 @@ Super verbose mode. This will add a lot of explanations about each step to solve
 >
 >Solutions: \
 >x1 = -0.2 + i * 0.4 and x2 = -0.2 - i * 0.4
+
+### Notes about equations notation
+
+For each term in an equation, the parser will determine the degree based on some patterns. Here is the list of accepted term notation per degree:
+#### DEGREE ZERO TERMS
+>4x^0 \
+>4 \
+>4.45 * x^0 \
+>4.32 * 1 \
+>4.123x^0 \
+>4.2 \
+>x^0 \
+>\-2 
+
+#### DEGREE ONE TERMS
+>8 * x^1 \
+>8 * x \
+>8x \
+>8x^1 \
+>8.3 * x^1 \
+>8.14 * x \
+>8.998x \
+>8.43x^1 \
+>x^1 \
+>x
+
+#### DEGREE TWO (AND MORE) TERMS
+NOTE: While you can absolutely use degree 3 terms and more, the program will reject the equation if these don't cancel themselves. \
+`4 * x^1 + 2 * x^5 = 2 * x^5` will work \
+`4 * x^1 + 2 * x^5 = 3 * x^5` will not
+>7 * x^2 \
+>7x^2 \
+>7.45 * x^2 \
+>7.7x^2 \
+>x^2 \
+
+### Notes about the valid_randexpr_generator.py script
+
+This script was used for debug purpose. It was a way for me to test the main script in many configurations. Each generated expression is valid, each term is generated randomly based on the patterns presented above. But if you are curious and want to try it yourself, here is how to do. \
+Usage: \
+`python3 valid_randexpr_gen.py \<number\>` \
+where number should be between 1 and 100. \
+Example:
+>$>python3 valid_randexpr_gen.py 5 \
+>"91x^0 - x^1 + 42 * x^2 = 1 - 20 * x + 36x^2" \
+>"52 * 1 + x^1 + 92 * x^2 = 9 * 1 - 55x + x^2" \
+>"-55 * x^0 + 93 * x + 83x^2 = -8x^0 + 98 * x - x^2" \
+>"27x^0 + 28 * x^1 - x^2 = 8 * 1 - 68 * x - 36 * x^2" \
+>"42 * x^0 + 82 * x + 99 * x^2 = 96x^0 - x^2"
+
+It is, of course, possible to pipe the output of the script with the main script like this: \
+`python3 valid_randexpr_gen.py 5 | xargs -n1 python3 computor-v1.py` \
+You can also use any option of the main script by adding it at the end of the command line. \
+Example:
+>$>python3 valid_randexpr_gen.py 3 | xargs -n1 python3 computor-v1.py -v \
+>Received expression: \
+>37 * x^0 + x + 15 * x^2 = 0
+>
+>Reduced form: 37 + x + 15 * x^2 = 0 \
+>Polynomial degree: 2
+>
+>Δ = -2219 \
+>Discriminant is strictly lower than 0. This means there are two complex numbers as solutions. \
+>Solutions: \
+>x1 = -0.033333333 + i * 1.570209 and x2 = -0.033333333 - i * 1.570209
+>
+>Received expression: \
+>84 * x^1 + 43x^2 = -86x^0 + 83 * x - 24x^2
+>
+>Reduced form: 86 + x + 67 * x^2 = 0 \
+>Polynomial degree: 2
+>
+>Δ = -23047 \
+>Discriminant is strictly lower than 0. This means there are two complex numbers as solutions. \
+>Solutions: \
+>x1 = -0.0074626866 + i * 1.132928 and x2 = -0.0074626866 - i * 1.132928
+>
+>Received expression: \
+>x^0 - 8 * x + x^2 = 0
+>
+>Reduced form: 1 - 8 * x + x^2 = 0 \
+>Polynomial degree: 2
+>
+>Δ = 60 \
+>Discriminant is strictly greater than 0. This means there are two real numbers as solutions. \
+>Solutions: \
+>x1 = 7.872983 and x2 = 0.1270167
